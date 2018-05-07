@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const {Schema} = mongoose
+const bcrypt = require('bcryptjs')
 
 const userSchema = new Schema({
     name: {
@@ -28,6 +29,27 @@ const userSchema = new Schema({
     }
 },{
     timestamps:true
+})
+
+
+userSchema.pre('save',function(next){
+    let salt = bcrypt.genSaltSync()
+    let includeNum = this.password.match(/\d+/g)
+
+    if (this.password.length < 6 || !includeNum) {
+        let err = { message:'user validation failed: password: password to weak, should more than 6 character, and include number'}
+        next(err)
+    }
+
+    bcrypt.hash(this.password,salt,(err,hashPass)=>{
+        if(err){
+            console.log(err)
+        }else{
+            this.password = hashPass
+            next()
+        }
+    })
+    
 })
 
 let user = mongoose.model('user',userSchema)

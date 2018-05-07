@@ -8,43 +8,34 @@ module.exports= {
     },
     signup(req,res,next){
         let {name,email,password,role} = req.body
-        let salt = bcrypt.genSaltSync()
-        let includeNum = password.match(/\d+/g)
-
-        if (password.length < 6 || !includeNum) {
-            return res.status(400).json({
-                message: 'password to weak, should more than 6 character, and include number'
+        User.create({
+            name,
+            email,
+            password,
+            role
+        })
+        .then(success=>{
+            res.status(200).json({
+                message: 'created account success',
+                name,
+                email,
+                role
             })
-        }
-
-        bcrypt.hash(password,salt,(err,hashPass)=>{
-            if(err){
-                console.log(err)
-            }else{
-                User.create({
-                    name,
-                    email,
-                    password:hashPass,
-                    role
-                })
-                .then(success=>{
-                    res.status(200).json({
-                        message: 'created account success',
-                        name,
-                        email,
-                        password: hashPass
-                    })
-                })
-                .catch(err=>{
-                    let message = err.message.substr(30)
-                    if(message.substr(0,7)=='lection'){
-                        message = 'Email Already Registered'
-                    }
-                    res.status(400).json({
-                        message
-                    })
-                })
+        })
+        .catch(err=>{
+            if(err.msg){
+                return res.status(400).json({
+                    err
+                })  
             }
+            let message = err.message.substr(34)
+            if(message.substr(0,3)=='ion'){
+                message = 'Email Already Registered'
+            }
+            res.status(400).json({
+                message
+            })  
+            
         })
     },
 

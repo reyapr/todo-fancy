@@ -12,7 +12,6 @@ const username = process.env.USERDB
 const pass = process.env.PASSWORD
 
 const mongoose = require('mongoose')
-// mongoose.connect(`mongodb://localhost/todo-fancy`)
 mongoose.connect(`mongodb://${username}:${pass}@ds113200.mlab.com:13200/todo-fancy`)
 
 
