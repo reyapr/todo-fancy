@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user.model')
+const FB = require('fb')
 
 module.exports= {
     homePage(req,res,next){
@@ -68,4 +69,65 @@ module.exports= {
             })
         })
     },
+    fbLogin(req,res,next){
+        FB.setAccessToken(req.headers.fbtoken)
+        FB.api('/me',{
+            fields:['name','email','picture']
+        }).then(response=>{
+            const {name,email,picture} = response
+            User.findOne({email})
+            .then(getUser=>{
+                let key = process.env.SECRET_KEY
+                let image = picture.data.url
+                if(getUser){
+                    let role = getUser.role
+                    let token = jwt.sign({
+                        id:getUser._id,
+                        name,
+                        email,
+                        role:'user'
+                    },key)
+                    
+                    res.status(200).json({
+                        message:'success login with facebook',
+                        token,
+                        role,
+                        image,
+                        name
+                    })
+                }else{
+                    User.create({
+                        name,
+                        email,
+                        password:'hacktiv8student',
+                        role:'user'
+                    }).then(createdUser=>{
+                        let role = createdUser.role
+                        let key = process.env.SECRET_KEY
+                        let token = jwt.sign({
+                            id: createdUser._id,
+                            name,
+                            email,
+                            role: createdUser.role
+                        }, key)
+                        res.status(200).json({
+                            message:'success login with facebook',
+                            token,
+                            role,
+                            image,
+                            name
+                        })
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    })
+                }
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        }).catch(err=>{
+            console.log(response)
+        })
+    }
 }
