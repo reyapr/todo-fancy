@@ -83,7 +83,6 @@
                                 v-for='(userTasks,index) in listTask'
                                 :alltask='userTasks'
                                 :checkdate='checkDate(userTasks.date)'
-                                :eventdate ='getEvent(checkDate(userTasks.date))'
                                 :events = 'listEvent'
                                 @edit-task='editTask'
                                 @delete-task='deleteTask'
@@ -113,6 +112,8 @@
             </div>
         </div>
     </div>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src='js/task.component.js'></script>
     <script src='js/app.js'></script>
     

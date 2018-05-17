@@ -1,5 +1,5 @@
 if(localStorage.getItem('token')!=null){
-    window.location = "https://013877f8.ngrok.io"
+    window.location = "https://bfd75b9e.ngrok.io"
 }
 
 window.fbAsyncInit = function () {
@@ -31,7 +31,7 @@ function checkLoginState() {
                     fbToken: response.authResponse.accessToken
                 }
             }).then(result => {
-                window.location = 'https://013877f8.ngrok.io'
+                window.location = 'https://bfd75b9e.ngrok.io'
                 localStorage.setItem('token', result.data.token)
                 localStorage.setItem('role', result.data.role)
                 localStorage.setItem('image',result.data.image)

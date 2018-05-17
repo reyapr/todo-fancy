@@ -14,14 +14,23 @@ new Vue({
                 email:this.email,
                 password:this.password
             }).then(response=>{
-                alert('success to login')
-                window.location = 'https://a5632c94.ngrok.io'
+                let message = response.data.message
+                swal({
+                    text: message,
+                });
+                if(response.data.token!=undefined){
+                window.location = 'https://bfd75b9e.ngrok.io'
                 localStorage.setItem('token', response.data.token)
                 localStorage.setItem('role', response.data.user.role)
                 localStorage.setItem('image', this.image)
                 localStorage.setItem('name', response.data.user.name)
+                }
+                
             }).catch(err=>{
-                console.log(err)
+                let error = err.response.data.message
+                swal({
+                    text: error,
+                });
             })
         },
         register(){
@@ -31,10 +40,16 @@ new Vue({
                 password:this.password,
                 role:'user'
             }).then(response=>{
-                alert('success to signup')
+                swal('success to signup')
                 console.log(response)
             }).catch(err=>{
-                console.log(err.message)
+                let error = err.response.data.message
+                if (error[0] == 'x') {
+                    error = 'email already registered'
+                }
+                swal({
+                    text: error,
+                });
             })
         }
     }

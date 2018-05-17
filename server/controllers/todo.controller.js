@@ -53,7 +53,8 @@ module.exports={
         }).then(updated=>{
             res.status(200).json({
                 message:'task success to update',
-                updated
+                updated,
+                _id
             })
         }).catch(err=>{
             res.status(400).json({
@@ -70,6 +71,7 @@ module.exports={
         }).then(deleted=>{
             res.status(200).json({
                 message:'task success to delete',
+                _id
             })
         }).catch(err=>{
             res.status(400).json({

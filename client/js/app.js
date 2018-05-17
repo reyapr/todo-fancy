@@ -1,5 +1,5 @@
 if(localStorage.getItem('token')==null){
-    window.location ='https://013877f8.ngrok.io/login.html'
+    window.location ='https://bfd75b9e.ngrok.io/login.html'
 }
 
 new Vue ({
@@ -27,9 +27,8 @@ new Vue ({
                     token: this.token
                 }
             }).then(response=>{
-                console.log(response)
-                alert('success to add task')
-                window.location.reload()
+                swal("Succes to Add To Do");
+                this.listTask.push(response.data.task)
             }).catch(err=>{
                 alert('must input the task and date')
             })
@@ -44,25 +43,37 @@ new Vue ({
                     token: this.token
                 }
             }).then(response=>{
-                console.log(response)
-                alert('success to edit task')
-                window.location.reload()
+                swal("Succes to Edit");
+                let match = this.listTask.findIndex(match => match._id == response.data._id);
+                this.listTask[match].task = task
+                this.listTask[match].date = date
+                this.listTask[match].status = status
             }).catch(err=>{
                 console.log(err)
             })
         },
         deleteTask (id){
-            axios.delete(`http://localhost:3000/user/todo/${id}`,{
-                headers:{
-                    token: this.token
+            swal("Are you sure you want to do this?", {
+                buttons: ["cancel", true],
+            }).then(succes=>{
+                if(succes){
+                    swal("Your To Do has been deleted!", {
+                        icon: "success",
+                    })
+                    axios.delete(`http://localhost:3000/user/todo/${id}`, {
+                        headers: {
+                            token: this.token
+                        }
+                    }).then(response => {
+                        window.location.reload()
+                    }).catch(err => {
+                        console.log(err)
+                    });
+                } else {
+                    swal("Your To Do file is safe!");
                 }
-            }).then(response=>{
-                console.log(response)
-                alert('success to delete task')
-                window.location.reload()
-            }).catch(err=>{
-                console.log(err)
             })
+            
         },
         checkDate(isDate){
             return isDate.split('T')[0]
@@ -71,15 +82,10 @@ new Vue ({
             localStorage.clear()
             window.location.reload()
         },
-        getEvent(date){
-            axios.get(`https://www.eventbriteapi.com/v3/events/search/?token=Q3UYEX4ADAWZKTHE3N7O&start_date.range_start=${date}T00:00:00&location.address=jakarta`)
-            .then(response=>{
-                console.log(response)
-            })
-            .catch(err=>{
-                console.log(err)
-            })
-        }
+        getEvent(){
+            
+        },
+      
     },
     mounted(){
         axios.get('http://localhost:3000/user/todo',{
@@ -93,6 +99,12 @@ new Vue ({
             console.log(err)
         })
 
-        
+        axios.get(`https://www.eventbriteapi.com/v3/events/search/?token=XKHNIZIRNCOG7PKBABRZ&start_date.range_start=2018-10-05T00:00:00&location.address=jakarta`)
+        .then(response => {
+            this.listEvent = response.data.events
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 })

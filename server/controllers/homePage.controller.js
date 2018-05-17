@@ -29,7 +29,7 @@ module.exports= {
                     err
                 })  
             }
-            let message = err.message.substr(34)
+            let message = err.message.substr(31)
             if(message.substr(0,3)=='ion'){
                 message = 'Email Already Registered'
             }

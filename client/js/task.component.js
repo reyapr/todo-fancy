@@ -6,7 +6,16 @@ let getTask = `<tr>
                         <input type="date" class="form-control" id="usr" v-model="userDate">
                     </td>
                     <td>
-                        {{eventdate}}                       
+                    <div class="form-group">
+                        <select class="form-control" id="sel1">
+                        
+                        <option 
+                        v-for='event in events' 
+                        v-if='event.end.local.substr(0,10)==checkdate'
+                        >{{event.name.text}}</option>
+                        </select>
+                        
+                    </div>
                     </td>
                     <td>
                         <input  type="checkbox" class="form-control" id="usr" v-model="userStatus" >
@@ -18,7 +27,7 @@ let getTask = `<tr>
                 </tr>
                 `
 Vue.component('user-task',{
-    props:['alltask','checkdate','userid','eventdate'],
+    props:['alltask','checkdate','userid','events'],
     data(){
         return{
             userTask:this.alltask.task,
@@ -34,6 +43,6 @@ Vue.component('user-task',{
         },
         deleteUserTask(){
             this.$emit('delete-task', this.alltask._id)
-        }
+        },
     }
 })
