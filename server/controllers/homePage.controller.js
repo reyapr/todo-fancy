@@ -80,6 +80,7 @@ module.exports= {
                 let key = process.env.SECRET_KEY
                 let image = picture.data.url
                 if(getUser){
+                    console.log('masuk')
                     let role = getUser.role
                     let token = jwt.sign({
                         id:getUser._id,
@@ -120,14 +121,23 @@ module.exports= {
                     })
                     .catch(err=>{
                         console.log(err)
+                        res.status(400).json({
+                            message:err.message
+                        })
                     })
                 }
             })
             .catch(err=>{
                 console.log(err)
+                res.status(400).json({
+                    message: err.message
+                })
             })
         }).catch(err=>{
-            console.log(response)
+            console.log(err)
+            res.status(400).json({
+                message: err.message
+            })
         })
     }
 }
