@@ -1,6 +1,6 @@
 <template>
     <div id='login'>
-        <div class='container' style='width: 25%;background-color: beige;margin-top: 10%'>
+        <div class='container col-sm-4 col-sm-offset-4' style='background-color: beige;margin-top:10%;'>
                 <h1 style="margin: 40px;text-align: center">User Login</h1>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email</label>
@@ -11,7 +11,7 @@
                     <input v-model='password' type="password" class="form-control" placeholder="Password" name="password">
                 </div>
                 <br>
-                <input v-on:click='signIn()' type="submit" class="btn btn-primary" value="Sign In"></input>
+                <input v-on:click='signIn()' type="submit" class="btn btn-primary" value="Sign In">
                 <br>
                 <br>
                     <fb-signin-button
@@ -80,7 +80,7 @@
         },
         methods:{
             signIn(){
-                axios.post('http://localhost:3000/signin',{
+                axios.post('https://maxville.net/signin',{
                     email:this.email,
                     password:this.password
                 }).then(response=>{
@@ -104,7 +104,7 @@
                 })
             },
             register(){
-                axios.post('http://localhost:3000/signup',{
+                axios.post('https://maxville.net/signup',{
                     email:this.email,
                     name:this.name,
                     password:this.password,
@@ -126,7 +126,7 @@
                 let self = this
                 FB.getLoginStatus(function (response) {
                     if (response.status == 'connected') {
-                        axios.post('http://localhost:3000/fblogin', {}, {
+                        axios.post('https://maxville/fblogin', {}, {
                             headers: {
                                 fbToken: response.authResponse.accessToken
                             }
