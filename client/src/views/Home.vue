@@ -68,6 +68,7 @@
                                 :checkdate='{date:checkDate(userTasks.date)}'
                                 :events = 'listEvent'
                                 :position = 'index'
+                                :key = 'index'
                                 @edit-task='editTask'
                                 @delete-task='deleteTask'
                             >
@@ -123,7 +124,7 @@ export default {
     },
     methods:{
         addTask (){
-            axios.post('http://localhost:3000/user/todo',{
+            axios.post('https://todo-api.maxville.net/user/todo',{
                 task:this.task,
                 date:this.date,
                 status:this.status
@@ -139,7 +140,7 @@ export default {
             })
         },
         editTask (id,task,date,status){
-            axios.put(`http://localhost:3000/user/todo/${id}`,{
+            axios.put(`https://todo-api.maxville.net/user/todo/${id}`,{
                 task,
                 date,
                 status
@@ -165,7 +166,7 @@ export default {
                     swal("Your To Do has been deleted!", {
                         icon: "success",
                     })
-                    axios.delete(`http://localhost:3000/user/todo/${id}`, {
+                    axios.delete(`https://todo-api.maxville.net/user/todo/${id}`, {
                         headers: {
                             token: this.token
                         }
@@ -195,7 +196,7 @@ export default {
         },
     },
     mounted(){
-        axios.get('http://localhost:3000/user/todo',{
+        axios.get('https://todo-api.maxville.net/user/todo',{
             headers:{
                 token: this.token
             }

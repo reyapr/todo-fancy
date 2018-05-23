@@ -73,14 +73,14 @@
                 name:null,
                 password:null,
                 fbSignInParams: {
-                    scope: 'email,user_likes',
+                    scope: 'email,public_profile',
                     return_scopes: true
                 }
             }
         },
         methods:{
             signIn(){
-                axios.post('https://maxville.net/signin',{
+                axios.post('https://todo-api.maxville.net/signin',{
                     email:this.email,
                     password:this.password
                 }).then(response=>{
@@ -104,7 +104,7 @@
                 })
             },
             register(){
-                axios.post('https://maxville.net/signup',{
+                axios.post('https://todo-api.maxville.net/signup',{
                     email:this.email,
                     name:this.name,
                     password:this.password,
@@ -126,7 +126,8 @@
                 let self = this
                 FB.getLoginStatus(function (response) {
                     if (response.status == 'connected') {
-                        axios.post('https://maxville/fblogin', {}, {
+                        console.log(response)
+                        axios.post('https://todo-api.maxville.net/fblogin', {}, {
                             headers: {
                                 fbToken: response.authResponse.accessToken
                             }
